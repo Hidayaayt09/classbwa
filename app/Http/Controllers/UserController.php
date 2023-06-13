@@ -36,5 +36,7 @@ class UserController extends Controller
 
          //   return $data;
         return redirect(route('welcome'));
+
+        // password harus null di database
     }
 }

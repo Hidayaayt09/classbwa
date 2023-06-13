@@ -28,8 +28,8 @@ class CampTableSeeder extends Seeder
             ],
         ];
 
-        foreach ($camps as $key => $camp) {
-            Camps::create($camp);
+        foreach ($camps as $key => $camps) {
+            Camps::create($camps);
         }
     }
 }
