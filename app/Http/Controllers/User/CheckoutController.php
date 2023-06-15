@@ -3,12 +3,15 @@
 namespace App\Http\Controllers\User;
 
 use App\Http\Controllers\Controller;
-use App\Models\checkout;
-use Illuminate\Http\Request;
 use App\Http\Requests\User\Checkout\Store;
+use App\Mail\Checkout\AfterCheckout;
 use App\Models\Camps;
+use App\Models\checkout;
 use App\Models\User;
 use Auth;
+use Illuminate\Http\Request;
+use Mail;
+
 
 class CheckoutController extends Controller
 {
@@ -32,7 +35,7 @@ class CheckoutController extends Controller
         // return $camp;
         if ($camp->isRegistered){
             $request->session()->flash('error', "You already registered on {$camp->title} camp.");
-            return redirect(route('dashboard'));
+            return redirect(route('user.dashboard'));
         }
         return view('checkout.create', [
             'camp' => $camp
@@ -40,17 +43,13 @@ class CheckoutController extends Controller
 
     }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
+    
+    
     public function store(Store $request, Camps $camp)
     {
         
         // return $camp;
-        return $request->all();
+        // return $request->all();
         //mapping
         // $data = new User();
         $data = $request->all();
@@ -66,18 +65,16 @@ class CheckoutController extends Controller
         // create checkout
         $checkout = Checkout::create($data);
 
+        Mail::to(Auth::user()->email)->send(new AfterCheckout($checkout));
+
         // return $checkout;
         return redirect(route('checkout.success'));
 
         // return $data;
     }
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  \App\Models\checkout  $checkout
-     * @return \Illuminate\Http\Response
-     */
+   
+    
     public function show(checkout $checkout)
     {
         //
@@ -120,5 +117,10 @@ class CheckoutController extends Controller
     public function success()
     {
         return view('checkout.success');
+    }
+
+    public function invoice(Checkout $checkout)
+    {
+        return $checkout;
     }
 }

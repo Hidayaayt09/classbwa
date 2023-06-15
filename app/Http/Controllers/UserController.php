@@ -4,8 +4,11 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Laravel\Socialite\Facades\Socialite;
+use App\Models\Camps;
 use App\Models\User;
 use Auth;
+use Mail;
+use App\Mail\User\AfterRegister;
 
 class UserController extends Controller
 {
@@ -31,8 +34,14 @@ class UserController extends Controller
             
         ];
 
-        $users = User::firstOrCreate(['email' => $data['email']], $data);
-        Auth::login($users, true);
+        // $users = User::firstOrCreate(['email' => $data['email']], $data);
+
+        $user = User::whereEmail($data['email'])->first();
+        if (!$user) {
+            $user = User::create($data);
+            Mail::to($user->email)->send(new AfterRegister($user));
+        }
+        Auth::login($user, true);
 
          //   return $data;
         return redirect(route('welcome'));

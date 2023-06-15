@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\softDeletes;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
-
 class Checkout extends Model
 {
     use HasFactory,softDeletes;
@@ -22,6 +21,11 @@ class Checkout extends Model
     public function camp(): BelongsTo
     {
         return $this->belongsTo(camps::class);
+    }
+
+    public function user(): BelongsTo
+    {
+        return $this->belongsTo(user::class);
     }
 
 }
