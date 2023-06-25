@@ -32,10 +32,15 @@
                         <img src="https://ui-avatars.com/api/?name=Admin" class="user-photo" alt="" style="border-radius: 50%">
                         @endif
                         <!-- <img src="{{Auth::user()->avatar}}" class="user-photo" alt=""> -->
-                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="border-radius: 50%"> 
+                        <ul class="dropdown-menu" aria-labelledby="dropdownMenuLink" style="right: 0; left: auto"> 
                             <li>
                                 <a href="{{route('dashboard')}}" class="dropdown-item">My dashboard</a>
                             </li>
+                            @if (Auth::user()->is_admin)
+                            <li>
+                                <a href="{{route('admin.discount.index')}}" class="dropdown-item">Discount</a>
+                            </li>
+                            @endif
                             <li>
                                 <a href="#" class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit()">Sign Out</a>
                                 <form id="logout-form" action="{{route('logout')}}" method="post" style="display: none">
