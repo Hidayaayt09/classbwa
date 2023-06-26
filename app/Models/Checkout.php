@@ -11,7 +11,7 @@ class Checkout extends Model
 {
     use HasFactory,softDeletes;
 
-    protected $fillable = ['user_id', 'camp_id','payment_status', 'midtrans_url', 'midtrans_booking_code'];
+    protected $fillable = ['user_id', 'camp_id','payment_status', 'midtrans_url', 'midtrans_booking_code', 'discount_id', 'discount_percentage', 'total'];
 
     public function setExpiredAttribute($value)
     {
@@ -27,5 +27,10 @@ class Checkout extends Model
     {
         return $this->belongsTo(user::class);
     }
+    public function discount(): BelongsTo
+    {
+        return $this->belongsTo(discount::class);
+    }
+
 
 }
